@@ -1,0 +1,86 @@
+// API Response wrapper
+export interface ApiResponse<T = any> {
+  code: number
+  message: string
+  data: T
+}
+
+// User types
+export interface User {
+  userId: number
+  name: string
+  gender?: "男" | "女"
+  age?: number
+  phone?: string
+  avatarUrl?: string
+  hobbies?: string
+  healthCondition?: string
+  last_login_time?: string
+  status: number
+}
+
+export interface LoginResponse {
+  accessToken: string
+  refreshToken: string
+  user: User
+}
+
+export interface RegisterResponse {
+  userId: number
+  token: string
+}
+
+// Course types
+export interface Course {
+  course_id: number
+  title: string
+  category: string
+  description: string
+  start_date?: string
+  end_date?: string
+  class_time: string
+  location: string
+  capacity: number
+  enrolled: number
+  status: 0 | 1 | 2 // 0=未开始, 1=进行中, 2=已结课
+  image_url?: string
+  contact_phone?: string
+  create_time?: string
+  update_time?: string
+}
+
+export interface CourseListResponse {
+  list: Course[]
+  total: number
+}
+
+// Enrollment types
+export interface EnrolledCourse {
+  course_id: number
+  title: string
+  class_time: string
+  location: string
+  status: number
+}
+
+export interface EnrollmentUser {
+  userId: number
+  user_id: number
+  name: string
+  gender?: string
+  avatarUrl?: string
+  avatar_url?: string
+  hobbies?: string
+  health_condition?: string
+}
+
+// Admin types
+export interface UserListResponse {
+  list: User[]
+  total: number
+}
+
+// Upload types
+export interface UploadResponse {
+  image_url: string
+}
