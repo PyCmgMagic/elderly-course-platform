@@ -72,7 +72,7 @@ export default function LoginPage() {
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-2 text-center">
-          <CardTitle className="text-3xl font-bold">唐社长者学院</CardTitle>
+          <CardTitle className="text-3xl font-bold">长者学院</CardTitle>
           <CardDescription className="text-lg">欢迎回来，请登录您的账户</CardDescription>
         </CardHeader>
         <CardContent>
