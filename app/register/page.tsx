@@ -63,18 +63,27 @@ export default function RegisterPage() {
       const response = await authApi.register(formData.name, formData.password)
 
       if (response.data.code === 200) {
-        const { userId, token } = response.data.data
-
-        // Fetch user details
-        const userResponse = await userApi.getUser(userId)
-        if (userResponse.data.code === 200) {
-          const user = userResponse.data.data
-          setAuth(user, token)
+        // 注册成功后，调用登录接口获取token
+        const loginResponse = await authApi.login(formData.name, formData.password)
+        
+        if (loginResponse.data.code === 200) {
+          const { accessToken, user } = loginResponse.data.data
+          
+          // 使用登录接口返回的完整用户信息和token
+          setAuth(user, accessToken)
           toast({
             title: "注册成功",
             description: `欢迎加入，${user.name}！`,
           })
           router.push("/courses")
+        } else {
+          // 登录失败，但注册已成功
+          toast({
+            title: "注册成功，但自动登录失败",
+            description: "请手动登录",
+            variant: "destructive",
+          })
+          router.push("/login")
         }
       } else {
         toast({
