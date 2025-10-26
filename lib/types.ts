@@ -12,7 +12,7 @@ export type UserRole = "admin" | "user"
 export interface User {
   userId: number
   name: string
-  gender?: "男" | "女"
+  gender?: "男" | "女" |string
   age?: number
   phone?: string
   avatarUrl?: string

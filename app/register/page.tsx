@@ -13,6 +13,7 @@ import { useToast } from "@/hooks/use-toast"
 import { authApi, userApi } from "@/lib/api"
 import { useAuthStore } from "@/lib/store"
 import { Eye, EyeOff, Loader2 } from "lucide-react"
+import { UserProfileGuide,type UserProfileData } from "@/components/onboarding/user-profile-guide"
 
 export default function RegisterPage() {
   const router = useRouter()
@@ -21,6 +22,7 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [showGuide, setShowGuide] = useState(false)
   const [formData, setFormData] = useState({
     name: "",
     password: "",
@@ -75,7 +77,9 @@ export default function RegisterPage() {
             title: "注册成功",
             description: `欢迎加入，${user.name}！`,
           })
-          router.push("/courses")
+          
+          // 显示用户信息完善引导
+          setShowGuide(true)
         } else {
           // 登录失败，但注册已成功
           toast({
@@ -100,6 +104,41 @@ export default function RegisterPage() {
       })
     } finally {
       setLoading(false)
+    }
+  }
+
+  const handleGuideComplete = async (profileData: UserProfileData) => {
+    try {
+      // 获取当前用户信息
+      const currentUser = useAuthStore.getState().user
+      if (!currentUser) {
+        throw new Error("用户信息不存在")
+      }
+
+      // 调用API保存用户的个人信息
+      await userApi.updateUser(currentUser.userId, {
+        gender: profileData.gender,
+        age: Number(profileData.age),
+        hobbies: profileData.interests.join(", ")+"。"+profileData.customInterest, // 将兴趣数组转换为字符串
+        healthCondition: profileData.healthStatus + "。"+profileData.healthDetails,
+      })
+      
+      toast({
+        title: "个人信息保存成功",
+        description: "现在为您跳转到课程页面",
+      })
+      
+      // 完成引导后跳转到课程页面
+      router.push("/courses")
+    } catch (error) {
+      console.error("保存个人信息失败:", error)
+      toast({
+        title: "保存失败",
+        description: "个人信息保存失败，但您仍可以正常使用",
+        variant: "destructive",
+      })
+      // 即使保存失败也跳转到课程页面
+      router.push("/courses")
     }
   }
 
@@ -203,6 +242,13 @@ export default function RegisterPage() {
           </form>
         </CardContent>
       </Card>
+      
+      {/* 用户信息完善引导 */}
+      <UserProfileGuide
+        open={showGuide}
+        onOpenChange={setShowGuide}
+        onComplete={handleGuideComplete}
+      />
     </div>
   )
 }
