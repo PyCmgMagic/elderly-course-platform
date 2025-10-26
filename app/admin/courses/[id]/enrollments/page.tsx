@@ -126,11 +126,11 @@ export default function CourseEnrollmentsPage() {
         ) : (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {enrollments.map((user) => (
-              <Card key={user.userId} className="cursor-pointer transition-colors hover:bg-muted/50" onClick={() => handleUserClick(user)}>
+              <Card key={user.user_id} className="cursor-pointer transition-colors hover:bg-muted/50" onClick={() => handleUserClick(user)}>
                 <CardHeader>
                   <div className="flex items-center gap-4">
                     <Avatar className="h-16 w-16">
-                      <AvatarImage src={user.avatar_url || "/placeholder.svg"} alt={user.name} />
+                      <AvatarImage src={user.avatar_url || "/defaultAvatar.svg"} alt={user.name} />
                       <AvatarFallback className="text-xl">{user.name[0]}</AvatarFallback>
                     </Avatar>
                     <div className="flex-1">
@@ -143,20 +143,7 @@ export default function CourseEnrollmentsPage() {
                     </div>
                   </div>
                 </CardHeader>
-                <CardContent className="space-y-2 text-base">
-                  {user.hobbies && (
-                    <div>
-                      <span className="font-medium text-muted-foreground">兴趣爱好：</span>
-                      <p className="mt-1">{user.hobbies}</p>
-                    </div>
-                  )}
-                  {user.health_condition && (
-                    <div>
-                      <span className="font-medium text-muted-foreground">健康状况：</span>
-                      <p className="mt-1">{user.health_condition}</p>
-                    </div>
-                  )}
-                </CardContent>
+        
               </Card>
             ))}
           </div>
@@ -173,7 +160,7 @@ export default function CourseEnrollmentsPage() {
                 {/* 头像和基本信息 */}
                 <div className="flex flex-col items-center space-y-4">
                   <Avatar className="h-24 w-24">
-                    <AvatarImage src={selectedUser.avatar_url || "/placeholder.svg"} alt={selectedUser.name} />
+                    <AvatarImage src={selectedUser.avatar_url || "/defaultAvatar.svg"} alt={selectedUser.name} />
                     <AvatarFallback className="text-2xl">{selectedUser.name[0]}</AvatarFallback>
                   </Avatar>
                   <div className="text-center">

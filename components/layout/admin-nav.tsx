@@ -2,8 +2,10 @@
 
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
+import { useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { useAuthStore } from "@/lib/store"
+import { usePermission } from "@/hooks/use-permission"
 import { BookOpen, Users, LogOut, GraduationCap, LayoutDashboard } from "lucide-react"
 import {
   DropdownMenu,
@@ -19,6 +21,26 @@ export function AdminNav() {
   const pathname = usePathname()
   const router = useRouter()
   const { user, clearAuth } = useAuthStore()
+  const { canAccessAdmin } = usePermission()
+
+  // 使用 useEffect 来处理权限检查和重定向，避免在渲染期间调用 router.push
+  useEffect(() => {
+    // 只在客户端执行重定向
+    if (typeof window !== 'undefined' && !canAccessAdmin) {
+      router.push("/courses")
+    }
+  }, [canAccessAdmin, router])
+
+  // 如果用户没有管理员权限，显示加载状态而不是 null
+  if (!canAccessAdmin) {
+    return (
+      <header className="sticky top-0 z-50 w-full border-b bg-card">
+        <div className="container mx-auto flex h-20 items-center justify-center px-4">
+          <div className="text-muted-foreground">正在验证权限...</div>
+        </div>
+      </header>
+    )
+  }
 
   const handleLogout = () => {
     clearAuth()
@@ -67,14 +89,20 @@ export function AdminNav() {
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="h-14 gap-3 px-4">
                 <Avatar className="h-10 w-10">
-                  <AvatarImage src={user?.avatarUrl || "/placeholder.svg"} alt={user?.name} />
+                  <AvatarImage src={user?.avatarUrl || "/defaultAvatar.svg"} alt={user?.name} />
                   <AvatarFallback className="text-lg">{user?.name?.[0]}</AvatarFallback>
                 </Avatar>
-                <span className="hidden text-base md:inline">{user?.name}</span>
+                <div className="hidden flex-col items-start md:flex">
+                  <span className="text-base">{user?.name}</span>
+                  <span className="text-xs text-muted-foreground">管理员</span>
+                </div>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuLabel className="text-base">管理员</DropdownMenuLabel>
+              <DropdownMenuLabel className="text-base">
+                管理员
+                <div className="text-xs text-muted-foreground font-normal">系统管理权限</div>
+              </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={handleLogout}

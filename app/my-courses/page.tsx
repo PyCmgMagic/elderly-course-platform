@@ -183,6 +183,15 @@ export default function MyCoursesPage() {
               return (
                 <Card key={course.course_id} className="flex flex-col">
                   <CardHeader className="space-y-2">
+                    {course.imageUrl && (
+                      <div className="mb-4 overflow-hidden rounded-lg">
+                        <img
+                          src={course.imageUrl}
+                          alt={course.title}
+                          className="aspect-video w-full object-cover transition-transform hover:scale-105"
+                        />
+                      </div>
+                    )}
                     <div className="flex items-start justify-between gap-2">
                       <h3 className="line-clamp-2 text-xl font-bold leading-tight">{course.title}</h3>
                       <Badge className="shrink-0 text-sm" variant={status.variant}>

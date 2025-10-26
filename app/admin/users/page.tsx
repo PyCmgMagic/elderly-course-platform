@@ -135,9 +135,9 @@ export default function AdminUsersPage() {
                     <TableCell>
                       <div className="flex items-center gap-3">
                         <Avatar className="h-10 w-10">
-                          <AvatarImage src={user.avatarUrl || "/placeholder.svg"} alt={user.name} />
-                          <AvatarFallback>{user.name[0]}</AvatarFallback>
-                        </Avatar>
+                        <AvatarImage src={user.avatarUrl || "/defaultAvatar.svg"} alt={user.name} />
+                        <AvatarFallback>{user.name[0]}</AvatarFallback>
+                      </Avatar>
                         <span className="font-medium">{user.name}</span>
                       </div>
                     </TableCell>

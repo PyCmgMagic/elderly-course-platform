@@ -30,7 +30,7 @@ export default function ProfilePage() {
     phone: "",
     avatarUrl: "",
     hobbies: "",
-    health_condition: "",
+    healthCondition: "",
   })
 
   // 页面加载时初始化表单数据
@@ -51,7 +51,7 @@ export default function ProfilePage() {
               phone: userData.phone || "",
               avatarUrl: userData.avatarUrl || "",
               hobbies: userData.hobbies || "",
-              health_condition: userData.health_condition || "",
+              healthCondition: userData.healthCondition || "",
             })
           }
         } catch (error: any) {
@@ -71,7 +71,7 @@ export default function ProfilePage() {
           phone: user.phone || "",
           avatarUrl: user.avatarUrl || "",
           hobbies: user.hobbies || "",
-          health_condition: user.health_condition || "",
+          healthCondition: user.healthCondition || "",
         })
       }
     }
@@ -158,7 +158,7 @@ export default function ProfilePage() {
         phone: formData.phone || undefined,
         avatarUrl: formData.avatarUrl || undefined,
         hobbies: formData.hobbies || undefined,
-        health_condition: formData.health_condition || undefined,
+        healthCondition: formData.healthCondition || undefined,
       }
 
       const response = await userApi.updateUser(user.userId, updateData)
@@ -204,7 +204,7 @@ export default function ProfilePage() {
                 <div className="flex flex-col items-center gap-4">
                   <div className="relative">
                     <Avatar className="h-32 w-32">
-                      <AvatarImage src={formData.avatarUrl || "/placeholder.svg"} alt={formData.name} />
+                      <AvatarImage src={formData.avatarUrl || "/defaultAvatar.svg"} alt={formData.name} />
                       <AvatarFallback className="text-4xl">{formData.name?.[0]}</AvatarFallback>
                     </Avatar>
                     <Button
@@ -288,21 +288,6 @@ export default function ProfilePage() {
                   </div>
 
                   <div className="space-y-3">
-                    <Label htmlFor="phone" className="text-lg">
-                      联系电话
-                    </Label>
-                    <Input
-                      id="phone"
-                      type="tel"
-                      placeholder="请输入联系电话"
-                      value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      className="h-14 text-lg"
-                      disabled={loading}
-                    />
-                  </div>
-
-                  <div className="space-y-3">
                     <Label htmlFor="hobbies" className="text-lg">
                       兴趣爱好
                     </Label>
@@ -317,14 +302,14 @@ export default function ProfilePage() {
                   </div>
 
                   <div className="space-y-3">
-                    <Label htmlFor="health_condition" className="text-lg">
+                    <Label htmlFor="healthCondition" className="text-lg">
                       健康状况
                     </Label>
                     <Textarea
-                      id="health_condition"
+                      id="healthCondition"
                       placeholder="请输入您的健康状况（如有特殊需求请注明）"
-                      value={formData.health_condition}
-                      onChange={(e) => setFormData({ ...formData, health_condition: e.target.value })}
+                      value={formData.healthCondition}
+                      onChange={(e) => setFormData({ ...formData, healthCondition: e.target.value })}
                       className="min-h-24 text-lg"
                       disabled={loading}
                     />

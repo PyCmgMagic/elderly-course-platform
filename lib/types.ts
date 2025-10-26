@@ -5,6 +5,9 @@ export interface ApiResponse<T = any> {
   data: T
 }
 
+// User role type
+export type UserRole = "admin" | "user"
+
 // User types
 export interface User {
   userId: number
@@ -15,8 +18,10 @@ export interface User {
   avatarUrl?: string
   hobbies?: string
   healthCondition?: string
+  emergencyContact?: string
   last_login_time?: string
   status: number
+  role?: UserRole
 }
 
 export interface LoginResponse {
@@ -61,6 +66,7 @@ export interface EnrolledCourse {
   class_time: string
   location: string
   status: number
+  imageUrl?: string
 }
 
 export interface EnrollmentUser {
