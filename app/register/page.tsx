@@ -9,11 +9,13 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Checkbox } from "@/components/ui/checkbox"
 import { useToast } from "@/hooks/use-toast"
 import { authApi, userApi } from "@/lib/api"
 import { useAuthStore } from "@/lib/store"
 import { Eye, EyeOff, Loader2 } from "lucide-react"
 import { UserProfileGuide,type UserProfileData } from "@/components/onboarding/user-profile-guide"
+import { PrivacyAgreement } from "@/components/ui/privacy-agreement"
 
 export default function RegisterPage() {
   const router = useRouter()
@@ -28,6 +30,8 @@ export default function RegisterPage() {
     password: "",
     confirmPassword: "",
   })
+  const [agreedToPrivacy, setAgreedToPrivacy] = useState(false)
+  const [agreedToTerms, setAgreedToTerms] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -55,6 +59,15 @@ export default function RegisterPage() {
       toast({
         title: "密码不匹配",
         description: "两次输入的密码不一致",
+        variant: "destructive",
+      })
+      return
+    }
+
+    if (!agreedToPrivacy || !agreedToTerms) {
+      toast({
+        title: "请同意协议",
+        description: "请阅读并同意隐私政策和服务条款",
         variant: "destructive",
       })
       return
@@ -217,6 +230,69 @@ export default function RegisterPage() {
                 >
                   {showConfirmPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                 </Button>
+              </div>
+            </div>
+
+            {/* 隐私协议勾选 */}
+            <div className="space-y-4">
+              <div className="flex items-start space-x-3">
+                <Checkbox
+                  id="privacy-agreement"
+                  checked={agreedToPrivacy}
+                  onCheckedChange={(checked) => {
+                    // 使用setTimeout避免flushSync错误
+                    setTimeout(() => {
+                      setAgreedToPrivacy(checked as boolean);
+                    }, 0);
+                  }}
+                  disabled={loading}
+                />
+                <div className="grid gap-1.5 leading-none">
+                  <label
+                    htmlFor="privacy-agreement"
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    我已阅读并同意
+                    <PrivacyAgreement type="privacy">
+                      <button
+                        type="button"
+                        className="text-primary hover:underline mx-1"
+                      >
+                        《隐私政策》
+                      </button>
+                    </PrivacyAgreement>
+                  </label>
+                </div>
+              </div>
+
+              <div className="flex items-start space-x-3">
+                <Checkbox
+                  id="terms-agreement"
+                  checked={agreedToTerms}
+                  onCheckedChange={(checked) => {
+                    // 使用setTimeout避免flushSync错误
+                    setTimeout(() => {
+                      setAgreedToTerms(checked as boolean);
+                    }, 0);
+                  }}
+                  disabled={loading}
+                />
+                <div className="grid gap-1.5 leading-none">
+                  <label
+                    htmlFor="terms-agreement"
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    我已阅读并同意
+                    <PrivacyAgreement type="terms">
+                      <button
+                        type="button"
+                        className="text-primary hover:underline mx-1"
+                      >
+                        《服务条款》
+                      </button>
+                    </PrivacyAgreement>
+                  </label>
+                </div>
               </div>
             </div>
 
